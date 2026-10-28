@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         smalltalk: [ Pharo64-15, Pharo64-14, Pharo64-13, Pharo64-12, Pharo64-11, Pharo64-10, Pharo64-9.0 ]
-        load-spec: [ client-deployment, server-deployment, http-transport, tcp-transport, server-logging ]
+        load-spec: [ deployment, client-deployment, server-deployment, http-transport, tcp-transport, server-logging ]
     name: ${{ matrix.smalltalk }} + ${{ matrix.load-spec }}
     steps:
       - uses: actions/checkout@v6
