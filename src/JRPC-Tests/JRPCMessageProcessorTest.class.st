@@ -120,6 +120,54 @@ JRPCMessageProcessorTest >> testDebugModeDoNotCatchError [
 	self shouldnt: [ (JRPCRequestObject id: 1 method: 'error') beHandledBy: messageProcessor ] raise: Error
 ]
 
+{ #category : 'test' }
+JRPCMessageProcessorTest >> testErrorDataChosenByAJRPCErrorIsKept [
+	"An error this framework models says what its data means, and a client is
+	 meant to read it. Only an unexpected fault of the image is withheld."
+
+	| processor response |
+	processor := JRPCMessageProcessor new.
+	self deny: processor includesErrorData.
+
+	response := JRPCErrorResponseObject
+		            id: 1
+		            error:
+		            (JRPCErrorObject code: -32002 message: 'Resource not found' data: { ('uri' -> 'pharo://missing') } asDictionary).
+
+	self
+		assert: (processor withoutInternalDataUnlessAsked: response for: JRPCIncorrectJSON new) error data
+		equals: { ('uri' -> 'pharo://missing') } asDictionary.
+
+	self assert: (processor withoutInternalDataUnlessAsked: response for: ZeroDivide new) error data isNil
+]
+
+{ #category : 'test' }
+JRPCMessageProcessorTest >> testErrorDataIsGivenWhenAsked [
+
+	| processor error |
+	processor := JRPCMessageProcessor new.
+	processor
+		includesErrorData: true;
+		addHandlerNamed: 'divide' block: [ :x :y | x / y ].
+
+	error := (STONJSON fromString: (processor handleJSON: '{"jsonrpc":"2.0","method":"divide","params":[1,0],"id":1}')) at: 'error'.
+	self assertCollection: error keys hasSameElements: #( 'code' 'message' 'data' ).
+	self assert: ((error at: 'data') at: 'errorClass') equals: 'ZeroDivide'
+]
+
+{ #category : 'test' }
+JRPCMessageProcessorTest >> testErrorDataIsWithheldByDefault [
+
+	| processor answer |
+	processor := JRPCMessageProcessor new.
+	processor addHandlerNamed: 'divide' block: [ :x :y | x / y ].
+
+	self deny: processor includesErrorData.
+
+	answer := STONJSON fromString: (processor handleJSON: '{"jsonrpc":"2.0","method":"divide","params":[1,0],"id":1}').
+	self assertCollection: (answer at: 'error') keys hasSameElements: #( 'code' 'message' )
+]
+
 { #category : 'tests - error handlers' }
 JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedOnSuccess [
 

@@ -80,6 +80,18 @@ JRPCMessageProcessorDecorator >> handlersCount [
 	^ self decoratedMessageProcessor handlersCount
 ]
 
+{ #category : 'accessing' }
+JRPCMessageProcessorDecorator >> includesErrorData [
+
+	^ self decoratedMessageProcessor includesErrorData
+]
+
+{ #category : 'accessing' }
+JRPCMessageProcessorDecorator >> includesErrorData: aBoolean [
+
+	^ self decoratedMessageProcessor includesErrorData: aBoolean
+]
+
 { #category : 'handlers management' }
 JRPCMessageProcessorDecorator >> removeHandler: aJRPCHandler [
 

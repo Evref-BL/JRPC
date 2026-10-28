@@ -34,7 +34,7 @@ Pharo 10. Development continues here.
   - HTTP
   - TCP
 - It is easy to add other transport layers.
-- Additional `data` when an error occured in the `error` object.
+- Optional `data` in the `error` object, describing what failed in the image, for servers that ask for it.
 
 ## Installation
 

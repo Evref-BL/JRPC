@@ -13,7 +13,8 @@ Class {
 	#instVars : [
 		'handlers',
 		'debugMode',
-		'errorHandlers'
+		'errorHandlers',
+		'includesErrorData'
 	],
 	#category : 'JRPC-Server-Core',
 	#package : 'JRPC-Server-Core'
@@ -55,7 +56,8 @@ JRPCMessageProcessor >> handleErrorsDuring: aBlock for: aJRPCRequestObject [
 					  on: Error
 					  do: [ :jrpcError |
 							  errorHandlers do: [ :handler | handler cull: jrpcError ].
-							  jrpcError return: (aJRPCRequestObject convertErrorToResponse: jrpcError) ] ]
+							  jrpcError return:
+								  (self withoutInternalDataUnlessAsked: (aJRPCRequestObject convertErrorToResponse: jrpcError) for: jrpcError) ] ]
 ]
 
 { #category : 'handling - jrpc' }
@@ -103,8 +105,7 @@ JRPCMessageProcessor >> handleJRPCRequestObject: aJRPCRequestObject [
 { #category : 'handling - json' }
 JRPCMessageProcessor >> handleJSON: aJSONString [
 	"Gets aJSONString being a request or notification serialized in JSON format as input
-	 and returns a JSON string being the answer serialized in JSON format.
-	"
+	 and returns a JSON string being the answer serialized in JSON format."
 
 	| jrpcResponse |
 	jrpcResponse := [ (self parseSupposedJRPCMessageObjectFromString: aJSONString) beHandledBy: self ]
@@ -112,7 +113,7 @@ JRPCMessageProcessor >> handleJSON: aJSONString [
 		                do: [ :error |
 				                self debugMode
 					                ifTrue: [ error pass ]
-					                ifFalse: [ error return: error asJRPCResponse ] ].
+					                ifFalse: [ error return: (self withoutInternalDataUnlessAsked: error asJRPCResponse for: error) ] ].
 
 	^ jrpcResponse beConvertedBy: self
 ]
@@ -139,13 +140,32 @@ JRPCMessageProcessor >> handlersCount [
 	^ handlers size
 ]
 
+{ #category : 'accessing' }
+JRPCMessageProcessor >> includesErrorData [
+	"Whether an error answer carries the optional `data` member describing what
+	 went wrong inside the image: the exception's class and message, the object
+	 that signalled it, and the method it was signalled from.
+
+	 Off, because a server answers clients that have no business knowing any of
+	 that. Turn it on where the clients are your own."
+
+	^ includesErrorData
+]
+
+{ #category : 'accessing' }
+JRPCMessageProcessor >> includesErrorData: aBoolean [
+
+	includesErrorData := aBoolean
+]
+
 { #category : 'initialization' }
 JRPCMessageProcessor >> initialize [
 
 	super initialize.
 	handlers := OrderedCollection new.
 	errorHandlers := OrderedCollection new.
-	self debugMode: false
+	self debugMode: false.
+	self includesErrorData: false
 ]
 
 { #category : 'testing' }
@@ -158,4 +178,18 @@ JRPCMessageProcessor >> isClient [
 JRPCMessageProcessor >> removeHandler: aJRPCHandler [
 
 	handlers remove: aJRPCHandler
+]
+
+{ #category : 'private' }
+JRPCMessageProcessor >> withoutInternalDataUnlessAsked: aJRPCResponseObject for: anException [
+	"An exception this framework models answers with the data it chose to send,
+	 which is part of what its error means and which a client is meant to read.
+	 Any other exception is an unexpected fault of the image, and what its data
+	 would say about the image is withheld unless this processor was told its
+	 clients may see it."
+
+	self includesErrorData ifTrue: [ ^ aJRPCResponseObject ].
+	(anException isKindOf: JRPCError) ifTrue: [ ^ aJRPCResponseObject ].
+	aJRPCResponseObject isError ifTrue: [ aJRPCResponseObject error data: nil ].
+	^ aJRPCResponseObject
 ]

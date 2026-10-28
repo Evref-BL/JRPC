@@ -256,6 +256,7 @@ JRPCServerTest >> testHandleJSON [
 JRPCServerTest >> testInternalError [
 
 	| requestForInternalError response data |
+	server includesErrorData: true.
 	server addHandlerNamed: 'divide' block: [ :x :y | x / y ].
 
 	requestForInternalError := JRPCRequestObject id: 1 method: 'divide' params: #( 1 0 ).

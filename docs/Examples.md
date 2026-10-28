@@ -39,10 +39,15 @@ server stop
 ## Additional data provided in error messages
 [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) specifies that in error messages, a `data` field can optionally be set to provide additional information about the error. However, this field structure is specified by the server. This section describes what the current implementation stores in the `data` field.
 
-To do that, let's take the following configuration. We have a server defined as follows:
+**A server does not send it unless you ask.** What it describes is the inside
+of the image, and the clients of a JSON-RPC server have no business knowing
+any of that, so `includesErrorData` is off and errors answer a code and a
+message alone. Turn it on where the clients are your own:
+
 ```smalltalk
 server := JRPCServer http
   port: 4000;
+  includesErrorData: true;
   addHandlerNamed: 'divide' block: [ :x :y | x / y ];
   yourself.
 

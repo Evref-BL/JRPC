@@ -84,6 +84,18 @@ JRPCAbstractMessageProcessor >> handlersDetect: aBlock [
 	^ self handlers detect: aBlock
 ]
 
+{ #category : 'handling - json' }
+JRPCAbstractMessageProcessor >> includesErrorData [
+
+	^ self subclassResponsibility
+]
+
+{ #category : 'handling - json' }
+JRPCAbstractMessageProcessor >> includesErrorData: aBoolean [
+
+	^ self subclassResponsibility
+]
+
 { #category : 'testing' }
 JRPCAbstractMessageProcessor >> isLogger [
 

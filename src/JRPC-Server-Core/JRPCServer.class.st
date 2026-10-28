@@ -62,6 +62,18 @@ JRPCServer >> handleJSON: aJSONString [
 	^ self messageProcessor handleJSON: aJSONString
 ]
 
+{ #category : 'accessing' }
+JRPCServer >> includesErrorData [
+
+	^ self messageProcessor includesErrorData
+]
+
+{ #category : 'accessing' }
+JRPCServer >> includesErrorData: aBoolean [
+
+	^ self messageProcessor includesErrorData: aBoolean
+]
+
 { #category : 'initialization' }
 JRPCServer >> initialize [
 
