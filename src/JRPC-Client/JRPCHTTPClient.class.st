@@ -38,15 +38,14 @@ JRPCHTTPClient >> initialize [
 ]
 
 { #category : 'private - sending' }
-JRPCHTTPClient >> sendRequest: aJRPCRequestObject [
+JRPCHTTPClient >> sendRequestContent: aString [
 
 	| result |
 	result := httpClient
-		          contents: (self convertJRPCJsonableObjectToJSON: aJRPCRequestObject asJRPCJSON);
-		          contentType: ZnMimeType applicationJson;
+		          contents: aString;
 		          post.
 
-	^ self parseSupposedJRPCMessageObjectFromString: (result ifNil: [ '' ] ifNotNil: #contents)
+	^ result ifNil: [ '' ] ifNotNil: #contents
 ]
 
 { #category : 'accessing' }

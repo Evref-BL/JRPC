@@ -3,7 +3,7 @@ I am an abstract client for JSON-RPC 2.0.
 
 My subclasses define how to transmit JSON-RPC objects to a server.
 
-To define that, #sendRequest: message should be overriden by my subclasses.
+To define that, #sendRequestContent: should be overriden by my subclasses. It is given the serialized request and answers what the server sent back, so a subclass only moves bytes and may frame them however its transport asks.
 "
 Class {
 	#name : 'JRPCClient',
@@ -92,11 +92,23 @@ JRPCClient >> sendNotification: aJRPCNotificationObject [
 
 { #category : 'private - sending' }
 JRPCClient >> sendRequest: aJRPCRequestObject [
-	"To be implemented by concrete subclasses.
-	 Sends aJRPCRequestObject to the server to which the client is connected.
+	"Sends aJRPCRequestObject to the server to which the client is connected.
 	 Returns a JRPCSuccessResponseObject if everything goes well.
-	 Returns a JRPCErrorResponse if something went wrong.
-	"
+	 Returns a JRPCErrorResponseObject if something went wrong."
+
+	^ self parseSupposedJRPCMessageObjectFromString:
+		  (self sendRequestContent: (self convertJRPCJsonableObjectToJSON: aJRPCRequestObject))
+]
+
+{ #category : 'private - sending' }
+JRPCClient >> sendRequestContent: aString [
+	"To be implemented by concrete subclasses.
+	 Sends aString, which holds a serialized JSON-RPC object, to the server the
+	 client is connected to, and answers the String the server sent back.
+
+	 Serializing and parsing happen in #sendRequest:, so a subclass only moves
+	 bytes, and is free to wrap aString in whatever framing its transport asks
+	 for, such as the header part the language server protocol puts in front."
 
 	^ self subclassResponsibility
 ]

@@ -65,16 +65,17 @@ JRPCStreamClient >> requestsSeparator: anObject [
 ]
 
 { #category : 'private - sending' }
-JRPCStreamClient >> sendRequest: aJRPCRequestObject [
+JRPCStreamClient >> sendRequestContent: aString [
 
-	self convertJRPCJsonableObjectToJSON: aJRPCRequestObject asJRPCJSON on: self writeStream.
-	self writeStream nextPutAll: self requestsSeparator.
+	self writeStream
+		nextPutAll: aString;
+		nextPutAll: self requestsSeparator.
 
 	self actionAfterStreamWritten cull: self writeStream.
 
-	"Needs to parse from a String here because it is possible that the stream
+	"Needs to answer a String here because it is possible that the stream
 	 provided can not do look ahead (the JSON parser needs that)."
-	^ self parseSupposedJRPCMessageObjectFromString: self readStream upToEnd
+	^ self readStream upToEnd
 ]
 
 { #category : 'accessing' }

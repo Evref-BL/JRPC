@@ -51,13 +51,13 @@ JRPCTCPClient >> port: anObject [
 ]
 
 { #category : 'private - sending' }
-JRPCTCPClient >> sendRequest: aJRPCRequestObject [
+JRPCTCPClient >> sendRequestContent: aString [
 
 	| socket result |
 	socket := Socket newTCP.
 	socket connectTo: self address port: self port.
-	socket sendData: (self convertJRPCJsonableObjectToJSON: aJRPCRequestObject asJRPCJSON).
+	socket sendData: aString.
 	result := socket receiveData.
 	socket closeAndDestroy.
-	^ self parseSupposedJRPCMessageObjectFromString: result
+	^ result
 ]
