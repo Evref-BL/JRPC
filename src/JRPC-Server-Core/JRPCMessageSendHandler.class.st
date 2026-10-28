@@ -71,7 +71,11 @@ JRPCMessageSendHandler >> parametersCount [
 
 { #category : #accessing }
 JRPCMessageSendHandler >> parametersNames [
-	^ (self receiver class >> self messageSelector) argumentNames
+	"The procedure's parameter names, in the order it takes them.
+	 The selector is looked up through the hierarchy, so a receiver
+	 may inherit the method that implements the procedure."
+
+	^ (self receiver class lookupSelector: self messageSelector) argumentNames
 ]
 
 { #category : #accessing }
