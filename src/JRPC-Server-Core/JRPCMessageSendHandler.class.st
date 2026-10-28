@@ -23,33 +23,35 @@ Class {
 
 { #category : #'parameters-checking' }
 JRPCMessageSendHandler >> checkParametersForRequest: aJRPCRequestObject [
-	aJRPCRequestObject params
-		ifNil: [ 
-			self parametersCount = 0
-				ifFalse: [ JRPCInvalidParameters signal ] ].
-	
-	(aJRPCRequestObject params ifNil: [ #() ]) size = self parametersCount
-		ifFalse: [ JRPCInvalidParameters signal ].
-		
-	(aJRPCRequestObject params isDictionary
-		and: [ ((aJRPCRequestObject params keys union: self parametersNames) size ~= self parametersCount) ])
-			ifTrue: [ JRPCInvalidParameters signal ]
+	"Positional parameters must match the procedure's arity: there is no way to
+	 leave one out and still say which the others are. Named parameters may give
+	 a subset of them, so that a procedure can have optional parameters, but every
+	 name given must be one the procedure declares."
+
+	| params names |
+	params := aJRPCRequestObject params.
+	params ifNil: [
+			self parametersCount = 0 ifFalse: [ JRPCInvalidParameters signal ].
+			^ self ].
+
+	params isDictionary ifFalse: [
+			(params isArray and: [ params size = self parametersCount ]) ifFalse: [ JRPCInvalidParameters signal ].
+			^ self ].
+
+	names := self parametersNames collect: [ :each | each asString ].
+	params keysDo: [ :each | (names includes: each asString) ifFalse: [ JRPCInvalidParameters signal ] ]
 ]
 
 { #category : #evaluation }
 JRPCMessageSendHandler >> executeWithArguments: anArrayOrDictionary [
+	"Named parameters are placed by name, so a parameter the request leaves out
+	 is passed as nil rather than shifting the ones that follow it into its place."
+
 	| arguments |
-	arguments := anArrayOrDictionary.
-	
-	anArrayOrDictionary ifNil: [ 
-		arguments := #() ].
-	
-	anArrayOrDictionary isDictionary
-		ifTrue: [
-			arguments := (anArrayOrDictionary associations sorted: [ :a :b |
-				(self parametersNames indexOf: a key) < (self parametersNames indexOf: b key) ])
-					collect: #value ].
-		
+	arguments := anArrayOrDictionary isDictionary
+		             ifTrue: [ self parametersNames collect: [ :each | anArrayOrDictionary at: each asString ifAbsent: [ nil ] ] ]
+		             ifFalse: [ anArrayOrDictionary ifNil: [ #(  ) ] ].
+
 	^ self send: self messageSelector to: self receiver with: arguments
 ]
 
