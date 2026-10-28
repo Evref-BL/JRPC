@@ -1,23 +1,30 @@
 # JRPC
 
-[![Unit Tests](https://github.com/juliendelplanque/JRPC/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/juliendelplanque/JRPC/actions/workflows/unit-tests.yml)
-[![Coverage Status](https://codecov.io/github/juliendelplanque/JRPC/coverage.svg?branch=master)](https://codecov.io/gh/juliendelplanque/JRPC/branch/master)
-[![Baseline Groups](https://github.com/juliendelplanque/JRPC/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/juliendelplanque/JRPC/actions/workflows/loading-groups.yml)
-
+[![Unit Tests](https://github.com/Evref-BL/JRPC/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/Evref-BL/JRPC/actions/workflows/unit-tests.yml)
+[![Baseline Groups](https://github.com/Evref-BL/JRPC/actions/workflows/loading-groups.yml/badge.svg)](https://github.com/Evref-BL/JRPC/actions/workflows/loading-groups.yml)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Pharo version](https://img.shields.io/badge/Pharo-6.1-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo version](https://img.shields.io/badge/Pharo-7.0-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo version](https://img.shields.io/badge/Pharo-9.0-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo 10](https://img.shields.io/badge/Pharo-10-%23aac9ff.svg)](https://pharo.org/download)
+[![Pharo](https://img.shields.io/badge/Pharo-6.1%20%E2%86%92%2015-%23aac9ff.svg)](https://pharo.org/download)
 
 Yet another [JSON-RPC 2.0](https://www.jsonrpc.org/specification) implementation for Pharo Smalltalk
 
+- [Origin](#origin)
 - [Features](#features)
 - [Installation](#installation)
 - [Examples](#examples)
 - [Comparison with other JSON RPC implementations](#jrpc-vs-others)
 - [Contributing](#contributing)
+
+## Origin
+
+JRPC was written by [Julien Delplanque](https://github.com/juliendelplanque),
+who designed it against the specification and left behind a test suite that is
+the specification's own example section. This repository continues it: the
+history, the design and the copyright notice are his, and the MIT licence is
+unchanged.
+
+Upstream has had no change to library code since 2021 and its CI stops at
+Pharo 10. This fork exists to keep a JSON-RPC 2.0 implementation that tracks
+current Pharo. Fixes made here are offered upstream.
 
 ## Features
 - Client and Server support for JSON-RPC 2.0.
