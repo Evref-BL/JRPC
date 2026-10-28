@@ -239,3 +239,17 @@ JRPCServerScenarioTest >> testRpcCallWithPositionalParameters [
 	self assert: (responseObject at: 'id') equals: 2.
 	self assert: (responseObject at: 'result') equals: -19.
 ]
+
+{ #category : #tests }
+JRPCServerScenarioTest >> testRpcCallWithUnsupportedVersion [
+	"The specification gives no example for this, but a version this
+	 implementation does not speak makes the message an invalid Request
+	 rather than an internal fault of the server."
+
+	| response |
+	response := STONJSON fromString: (server handleJSON: '{"jsonrpc": "1.0", "method": "subtract", "params": [42, 23], "id": 1}').
+	self assertCollection: response keys hasSameElements: #( 'jsonrpc' 'error' 'id' ).
+	self assert: (response at: 'jsonrpc') equals: '2.0'.
+	self assert: (response at: 'id') isNil.
+	self assert: ((response at: 'error') at: 'code') equals: InvalidRequest
+]

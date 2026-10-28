@@ -22,33 +22,25 @@ Class {
 JRPCMessageObject class >> classToInstantiateForJSONObject: aJSONObject forClient: isClient [
 	"Given aJSONObject, returns the right class to instantiate in order to get
 	 the model object corresponding.
-	"
-	aJSONObject isArray
-		ifTrue: [ 
-			aJSONObject isEmpty
-				ifTrue: [ JRPCIncorrectJSON signal: 'Empty batch.' ].
+	 Every message MUST carry 'jsonrpc', and it MUST be the version we speak:
+	 anything else is an invalid Request, not an internal fault of the server."
+
+	aJSONObject isArray ifTrue: [
+			aJSONObject isEmpty ifTrue: [ JRPCIncorrectJSON signal: 'Empty batch.' ].
 			^ isClient
-				ifTrue: [ JRPCBatchResponseObject ]
-				ifFalse: [ JRPCBatchRequestsObject ] ].
-	
+				  ifTrue: [ JRPCBatchResponseObject ]
+				  ifFalse: [ JRPCBatchRequestsObject ] ].
+
 	"Else this must be a dictionary."
-	aJSONObject isDictionary
-		ifFalse: [ JRPCIncorrectJSON signal: 'Incorrect JSON, should be a Dictionary or an Array.' ].
-	aJSONObject
-		at: 'jsonrpc' "This MUST be in messages."
-		ifPresent: [ :value |
-			value = JSONRPC ifFalse: [ self error: 'Unsupported version of JSON-RPC. I can only handle JSON-RPC 2.0.' ].
-			(aJSONObject includesKey: 'id')
-				ifFalse: [ ^ JRPCNotificationObject ].
-			(aJSONObject includesKey: 'result')
-				ifTrue: [ ^ JRPCSuccessResponseObject ].
-			
-			(aJSONObject includesKey: 'error')
-				ifTrue: [ ^ JRPCErrorResponseObject ].
-			
-			(aJSONObject includesKey: 'method')
-				ifTrue: [ ^ JRPCRequestObject ] ].
-	
+	aJSONObject isDictionary ifFalse: [ JRPCIncorrectJSON signal: 'Incorrect JSON, should be a Dictionary or an Array.' ].
+
+	aJSONObject at: 'jsonrpc' ifPresent: [ :value |
+			value = JSONRPC ifFalse: [ JRPCIncorrectJSON signal: 'Unsupported version of JSON-RPC. I can only handle JSON-RPC 2.0.' ].
+			(aJSONObject includesKey: 'id') ifFalse: [ ^ JRPCNotificationObject ].
+			(aJSONObject includesKey: 'result') ifTrue: [ ^ JRPCSuccessResponseObject ].
+			(aJSONObject includesKey: 'error') ifTrue: [ ^ JRPCErrorResponseObject ].
+			(aJSONObject includesKey: 'method') ifTrue: [ ^ JRPCRequestObject ] ].
+
 	JRPCIncorrectJSON signal: 'Incorrect JSON, no class to instantiate for it.'
 ]
 
