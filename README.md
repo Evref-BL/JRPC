@@ -12,20 +12,18 @@ Yet another [JSON-RPC 2.0](https://www.jsonrpc.org/specification) implementation
 - [Features](#features)
 - [Installation](#installation)
 - [Examples](#examples)
-- [Comparison with other JSON RPC implementations](#jrpc-vs-others)
 - [Contributing](#contributing)
 
 ## Origin
 
 JRPC was written by [Julien Delplanque](https://github.com/juliendelplanque),
 who designed it against the specification and left behind a test suite that is
-the specification's own example section. This repository continues it: the
-history, the design and the copyright notice are his, and the MIT licence is
-unchanged.
+the specification's own example section. The history, the design and the
+copyright notice are his, and the MIT licence is unchanged.
 
-Upstream has had no change to library code since 2021 and its CI stops at
-Pharo 10. This fork exists to keep a JSON-RPC 2.0 implementation that tracks
-current Pharo. Fixes made here are offered upstream.
+It was forked from [juliendelplanque/JRPC](https://github.com/juliendelplanque/JRPC),
+which has had no change to library code since 2021 and whose CI stops at
+Pharo 10. Development continues here.
 
 ## Features
 - Client and Server support for JSON-RPC 2.0.
@@ -49,15 +47,6 @@ Explore the [documentation](docs/Examples.md)
 ## Implementation details
 
 See how [message processing](docs/MessageProcessing.md) works in detail.
-
-## Comparison with other JSON RPC implementations
-
-| Property     | JRPC               | LtJsonRpc          | NeoJSONRPC         |
-|--------------|--------------------|--------------------|--------------------|
-| Server       | :white_check_mark: | :white_check_mark: | :x:                |
-| Client       | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| JSON backend | STONJSON           | Json               | NeoJSON            |
-| Tests        | :white_check_mark: | :x:                | :x:                |
 
 ## Contributing
 

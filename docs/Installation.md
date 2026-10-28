@@ -10,10 +10,10 @@ You can load **JRPC** evaluating:
 ```smalltalk
 Metacello new
 	baseline: 'JRPC';
-	repository: 'github://Evref-BL/JRPC:master/src';
+	repository: 'github://Evref-BL/JRPC:main/src';
 	load.
 ```
->  Change `master` to some released version if you want a pinned version
+> Change `main` to a released tag, of the form `vX.Y.Z`, to pin the dependency.
 
 ## Using as dependency
 
@@ -25,11 +25,11 @@ setUpDependencies: spec
 	spec
 		baseline: 'JRPC'
 			with: [ spec
-				repository: 'github://Evref-BL/JRPC:v{XX}/src';
+				repository: 'github://Evref-BL/JRPC:vX.Y.Z/src';
 				loads: #('Deployment') ];
 		import: 'JRPC'.
 ```
-> Replace `{XX}` with the version you want to depend on
+> Replace `vX.Y.Z` with the version you want to depend on
 
 ```smalltalk
 baseline: spec
@@ -43,7 +43,7 @@ baseline: spec
 
 ## Version management
 
-This project use semantic versioning to define the releases. This means that each stable release of the project will be assigned a version number of the form `vX.Y.Z`.
+This project uses semantic versioning to define the releases. This means that each stable release of the project will be assigned a version number of the form `vX.Y.Z`.
 
 - **X** defines the major version number
 - **Y** defines the minor version number
@@ -58,6 +58,7 @@ Thus, it should be safe to depend on a fixed major version and moving minor vers
 - `HTTP-Transport` will load all the packages needed to deploy an HTTP based JSON RPC Server
 - `TCP-Transport` will load all the packages needed to deploy a TCP based JSON RPC Server
 - `Client-Deployment` will load all the packages needed to deploy a JSON RPC Client
+- `Server-Logging` will load the packages that log what a message processor receives and answers
 - `Deployment` will load all the packages needed to deploy both a JSON RPC Client and Server including HTTP and TCP transports
 - `Tests` will load the test cases
 - `CI` is the group loaded in the continuous integration setup
