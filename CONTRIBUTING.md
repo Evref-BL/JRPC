@@ -1,7 +1,7 @@
 Contributing
 ============
 
-There's several ways to contribute to the project: reporting bugs, sending feedback, proposing ideas for new features, fixing or adding documentation, promoting the project, or even contributing code.
+There are several ways to contribute to the project: reporting bugs, sending feedback, proposing ideas for new features, fixing or adding documentation, promoting the project, or even contributing code.
 
 ## Reporting issues
 
@@ -11,7 +11,7 @@ You can report issues [here](https://github.com/Evref-BL/JRPC/issues/new)
 - This project is MIT licensed, so any code contribution MUST be under the same license.
 - This project uses [Semantic Versioning](http://semver.org/), so keep it in mind when you make backwards-incompatible changes. If some backwards incompatible change is made the major version MUST be increased.
 - The source code is hosted in this repository using the Tonel format in the `src` folder.
-- The `master` branch contains the latest changes.
+- The `main` branch contains the latest changes.
 - Feel free to send pull requests or fork the project.
 
 ### Using Iceberg
@@ -24,8 +24,8 @@ You can report issues [here](https://github.com/Evref-BL/JRPC/issues/new)
 7. Do the changes
 8. Run the test cases
 9. Commit and push your changes to the branch using the Iceberg UI
-10. Create a Pull Request against the `master` branch
+10. Create a Pull Request against the `main` branch
 
 ## Contributing documentation
 
-The project documentation is maintained in this repository in the `docs` folder. To contribute some documentation or improve the existing, feel free to create a branch or fork this repository, make your changes and send a pull request.
+The project documentation is maintained in this repository in the `docs` folder. To contribute some documentation or improve the existing ones, feel free to create a branch or fork this repository, make your changes and send a pull request.
