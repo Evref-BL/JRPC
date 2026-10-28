@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Pharo](https://img.shields.io/badge/Pharo-6.1%20%E2%86%92%2015-%23aac9ff.svg)](https://pharo.org/download)
 
-Yet another [JSON-RPC 2.0](https://www.jsonrpc.org/specification) implementation for Pharo Smalltalk
+Yet another [JSON-RPC 2.0](https://www.jsonrpc.org/specification) implementation for [Pharo Smalltalk](https://pharo.org)
 
 - [Origin](#origin)
 - [Features](#features)
@@ -28,7 +28,7 @@ Pharo 10. Development continues here.
 ## Features
 - Client and Server support for JSON-RPC 2.0.
 - Only depends on Pharo's built-in packages.
-- Uses STONJSON to parse JSON internally.
+- Uses `STONJSON` to parse JSON internally.
 - Transport agnostic (like JSON-RPC 2.0 spec claims).
 - Can currently be used over
   - HTTP
