@@ -39,25 +39,21 @@ BaselineOfJRPC >> setUpPackages: spec [
 		setUpServerDeploymentPackages: spec;
 		setUpClientDeploymentPackages: spec.
 
-	spec
-		group: 'Deployment'
-		with: #('Server-Deployment' 'HTTP-Transport' 'TCP-Transport' 'Client-Deployment' 'JRPC-Server-Deprecated').
-		
+	spec group: 'Deployment' with: #( 'Server-Deployment' 'HTTP-Transport' 'TCP-Transport' 'Client-Deployment' ).
+
 	spec
 		package: 'JRPC-Tests' with: [ spec requires: 'Deployment' ];
-		package: 'JRPC-Server-Logging-Tests'  with: [ spec requires: #('Deployment' 'Server-Logging') ];
-		group: 'Tests' with: #('JRPC-Tests' 'JRPC-Server-Logging-Tests')
+		package: 'JRPC-Server-Logging-Tests' with: [ spec requires: #( 'Deployment' 'Server-Logging' ) ];
+		group: 'Tests' with: #( 'JRPC-Tests' 'JRPC-Server-Logging-Tests' )
 ]
 
 { #category : #baselines }
 BaselineOfJRPC >> setUpServerDeploymentPackages: spec [
 
-	spec
-		for: #'pharo6.x'
-		do: [ spec
+	spec for: #'pharo6.x' do: [
+			spec
 				package: 'JRPC-Server-Pharo6';
-				group: 'Server-Deployment' with: 'JRPC-Server-Pharo6'
-			].
+				group: 'Server-Deployment' with: 'JRPC-Server-Pharo6' ].
 	spec
 		package: 'JRPC-Server-Core' with: [ spec requires: 'JRPC-Common' ];
 		group: 'Server-Deployment' with: 'JRPC-Server-Core'.
@@ -69,11 +65,8 @@ BaselineOfJRPC >> setUpServerDeploymentPackages: spec [
 	spec
 		package: 'JRPC-Server-TCP' with: [ spec requires: 'JRPC-Server-Core' ];
 		group: 'TCP-Transport' with: 'JRPC-Server-TCP'.
-		
+
 	spec
 		package: 'JRPC-Server-Logging' with: [ spec requires: 'JRPC-Server-Core' ];
-		group: 'Server-Logging' with: 'JRPC-Server-Logging'.
-		
-	spec
-		package: 'JRPC-Server-Deprecated' with: [ spec requires: 'JRPC-Server-Core' ]
+		group: 'Server-Logging' with: 'JRPC-Server-Logging'
 ]
