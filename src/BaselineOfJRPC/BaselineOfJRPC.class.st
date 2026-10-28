@@ -1,37 +1,36 @@
 Class {
-	#name : #BaselineOfJRPC,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfJRPC
+	#name : 'BaselineOfJRPC',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfJRPC',
+	#package : 'BaselineOfJRPC'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfJRPC >> baseline: spec [
 
 	<baseline>
-	spec
-		for: #pharo
-		do: [ self setUpPackages: spec.
+	spec for: #pharo do: [
+			self setUpPackages: spec.
 			spec
 				group: 'CI' with: 'Tests';
-				group: 'Development' with: 'Tests'
-			]
+				group: 'Development' with: 'Tests' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 BaselineOfJRPC >> projectClass [
 
 	^ MetacelloCypressBaselineProject
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfJRPC >> setUpClientDeploymentPackages: spec [
 
 	spec
 		package: 'JRPC-Client' with: [ spec requires: 'JRPC-Common' ];
-		group: 'Client-Deployment' with: 'JRPC-Client'.
+		group: 'Client-Deployment' with: 'JRPC-Client'
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfJRPC >> setUpPackages: spec [
 
 	spec package: 'JRPC-Common'.
@@ -47,7 +46,7 @@ BaselineOfJRPC >> setUpPackages: spec [
 		group: 'Tests' with: #( 'JRPC-Tests' 'JRPC-Server-Logging-Tests' )
 ]
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfJRPC >> setUpServerDeploymentPackages: spec [
 
 	spec for: #'pharo6.x' do: [

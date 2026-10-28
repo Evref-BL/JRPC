@@ -1,16 +1,19 @@
 Class {
-	#name : #JRPCMockHandler,
-	#superclass : #JRPCPragmaHandler,
-	#category : #'JRPC-Tests'
+	#name : 'JRPCMockHandler',
+	#superclass : 'JRPCPragmaHandler',
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMockHandler class >> defaultMethodName [
+
 	^ 'mock'
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 JRPCMockHandler >> add: x with: y [
+
 	<jrpc>
 	^ x + y
 ]

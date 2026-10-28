@@ -10,69 +10,78 @@ I MAY hold:
 [1]: https://www.jsonrpc.org/specification
 "
 Class {
-	#name : #JRPCRequestObject,
-	#superclass : #JRPCMessageObject,
+	#name : 'JRPCRequestObject',
+	#superclass : 'JRPCMessageObject',
 	#instVars : [
 		'method',
 		'params'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCRequestObject class >> fromJRPCJSONObject: aDictionary [
+
 	^ (super fromJRPCJSONObject: aDictionary)
-		method: (aDictionary at: 'method');
-		params: (aDictionary at: 'params' ifAbsent: [ nil ]);
-		yourself
+		  method: (aDictionary at: 'method');
+		  params: (aDictionary at: 'params' ifAbsent: [ nil ]);
+		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCRequestObject class >> id: anInteger method: aString [
+
 	^ self id: anInteger method: aString params: nil
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCRequestObject class >> id: anInteger method: aString params: anArrayOrDictionary [
+
 	^ self new
-		id: anInteger;
-		method: aString;
-		params: anArrayOrDictionary;
-		yourself
+		  id: anInteger;
+		  method: aString;
+		  params: anArrayOrDictionary;
+		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCRequestObject >> asJRPCJSON [
+
 	| dict |
 	dict := super asJRPCJSON.
-	dict
-		at: 'method' put: self method asJRPCJSON.
-	self params ifNotNil: [
-		dict at: 'params' put: self params asJRPCJSON ].
+	dict at: 'method' put: self method asJRPCJSON.
+	self params ifNotNil: [ dict at: 'params' put: self params asJRPCJSON ].
 	^ dict
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCRequestObject >> isRequest [
+
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCRequestObject >> method [
+
 	^ method
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCRequestObject >> method: anObject [
+
 	method := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCRequestObject >> params [
+
 	^ params
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCRequestObject >> params: anObject [
+
 	params := anObject
 ]

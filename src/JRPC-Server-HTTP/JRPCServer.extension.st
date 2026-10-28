@@ -1,6 +1,7 @@
-Extension { #name : #JRPCServer }
+Extension { #name : 'JRPCServer' }
 
-{ #category : #'*JRPC-Server-HTTP' }
+{ #category : '*JRPC-Server-HTTP' }
 JRPCServer class >> http [
+
 	^ JRPCHTTPServer new
 ]

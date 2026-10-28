@@ -2,20 +2,21 @@
 I'm a test for JSON RPC over HTTP transport
 "
 Class {
-	#name : #JRPCHttpServerTest,
-	#superclass : #JRPCAbstractServerTest,
-	#category : #'JRPC-Tests'
+	#name : 'JRPCHttpServerTest',
+	#superclass : 'JRPCAbstractServerTest',
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 JRPCHttpServerTest >> newJRPCClient [
 
-	^ ( JRPCClient http: ( 'http://localhost' asUrl port: self port ) )
-		ifFail: [ self fail ];
-		yourself
+	^ (JRPCClient http: ('http://localhost' asZnUrl port: self port))
+		  ifFail: [ self fail ];
+		  yourself
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 JRPCHttpServerTest >> setUp [
 
 	super setUp.

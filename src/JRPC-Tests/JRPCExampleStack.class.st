@@ -1,26 +1,30 @@
 Class {
-	#name : #JRPCExampleStack,
-	#superclass : #Object,
+	#name : 'JRPCExampleStack',
+	#superclass : 'Object',
 	#instVars : [
 		'stack'
 	],
-	#category : #'JRPC-Tests'
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCExampleStack >> initialize [
+
 	super initialize.
-	stack := Stack new.
+	stack := Stack new
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 JRPCExampleStack >> pop [
+
 	<jrpc: #stack_pop>
 	^ stack pop
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 JRPCExampleStack >> push: anObject [
+
 	<jrpc: #stack_push>
 	stack push: anObject.
 	"We return nil explicitely, else as the default behaviour is to return self,
@@ -31,8 +35,9 @@ JRPCExampleStack >> push: anObject [
 	^ nil
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 JRPCExampleStack >> top [
+
 	<jrpc: #stack_top>
 	^ stack top
 ]

@@ -7,41 +7,47 @@ I MUST hold:
 [1]: https://www.jsonrpc.org/specification
 "
 Class {
-	#name : #JRPCSuccessResponseObject,
-	#superclass : #JRPCResponseObject,
+	#name : 'JRPCSuccessResponseObject',
+	#superclass : 'JRPCResponseObject',
 	#instVars : [
 		'result'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCSuccessResponseObject class >> fromJRPCJSONObject: aDictionary [
-	^ (super fromJRPCJSONObject: aDictionary)
-		result: (aDictionary at: 'result')
+
+	^ (super fromJRPCJSONObject: aDictionary) result: (aDictionary at: 'result')
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCSuccessResponseObject class >> id: anInteger result: anObject [
+
 	^ self new
-		id: anInteger;
-		result: anObject;
-		yourself
+		  id: anInteger;
+		  result: anObject;
+		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCSuccessResponseObject >> asJRPCJSON [
+
 	^ super asJRPCJSON
-		at: 'result' put: self result asJRPCJSON;
-		yourself
+		  at: 'result' put: self result asJRPCJSON;
+		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCSuccessResponseObject >> result [
+
 	^ result
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCSuccessResponseObject >> result: anObject [
+
 	result := anObject
 ]

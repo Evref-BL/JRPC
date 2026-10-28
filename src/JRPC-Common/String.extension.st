@@ -1,6 +1,7 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*JRPC-Common' }
+{ #category : '*JRPC-Common' }
 String >> asJRPCJSON [
+
 	^ self
 ]

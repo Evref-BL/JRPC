@@ -1,6 +1,7 @@
-Extension { #name : #Number }
+Extension { #name : 'Number' }
 
-{ #category : #'*JRPC-Common' }
+{ #category : '*JRPC-Common' }
 Number >> asJRPCJSON [
+
 	^ self asFloat
 ]

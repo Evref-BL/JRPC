@@ -1,22 +1,26 @@
 Class {
-	#name : #JRPCMockHandlerMultiplePragmas,
-	#superclass : #JRPCPragmaHandler,
-	#category : #'JRPC-Tests'
+	#name : 'JRPCMockHandlerMultiplePragmas',
+	#superclass : 'JRPCPragmaHandler',
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMockHandlerMultiplePragmas class >> defaultMethodName [
+
 	^ 'mock'
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 JRPCMockHandlerMultiplePragmas >> method1 [
+
 	<jrpc>
 	^ 1
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 JRPCMockHandlerMultiplePragmas >> method2 [
+
 	<jrpc>
 	^ 2
 ]

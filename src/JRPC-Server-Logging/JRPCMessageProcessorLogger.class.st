@@ -4,39 +4,45 @@ I log incoming/outgoing JSON read/answered by a message processor as communicati
 I am quite interesting in case one wants to understand what happens during communication without interfering with it.
 "
 Class {
-	#name : #JRPCMessageProcessorLogger,
-	#superclass : #JRPCMessageProcessorDecorator,
+	#name : 'JRPCMessageProcessorLogger',
+	#superclass : 'JRPCMessageProcessorDecorator',
 	#instVars : [
 		'logs'
 	],
-	#category : #'JRPC-Server-Logging'
+	#category : 'JRPC-Server-Logging',
+	#package : 'JRPC-Server-Logging'
 }
 
-{ #category : #'handling - json' }
+{ #category : 'handling - json' }
 JRPCMessageProcessorLogger >> handleJSON: aJSONString [
+
 	| answerJSON |
 	answerJSON := super handleJSON: aJSONString.
 	self logs add: (JRPCCommunicationLog incomingJSON: aJSONString answerJSON: answerJSON) timestampBeNow.
 	^ answerJSON
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCMessageProcessorLogger >> initialize [
+
 	super initialize.
 	self logs: OrderedCollection new
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCMessageProcessorLogger >> isLogger [
+
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageProcessorLogger >> logs [
+
 	^ logs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageProcessorLogger >> logs: anObject [
+
 	logs := anObject
 ]

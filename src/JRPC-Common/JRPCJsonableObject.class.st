@@ -6,25 +6,29 @@ My subclasses must define:
 - #fromDictionary: (class-side) which defines how to build an object from a dictionary representing it.
 "
 Class {
-	#name : #JRPCJsonableObject,
-	#superclass : #Object,
+	#name : 'JRPCJsonableObject',
+	#superclass : 'Object',
 	#pools : [
 		'JRPCConstantsSharedPool'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCJsonableObject class >> fromJRPCJSONObject: aJSONObject [
 	"Builds myself using aJSONObject.
 	 Must be implemented by concrete subclasses.
 	"
+
 	^ self subclassResponsibility
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCJsonableObject >> asJRPCJSON [
 	"Returns a JSON object that suits well for the JSON-RPC 2.0 protocol.
 	 To be overrided by subclasses."
+
 	^ self subclassResponsibility
 ]

@@ -1,1 +1,1 @@
-Package { #name : #'JRPC-Server-HTTP' }
+Package { #name : 'JRPC-Server-HTTP' }

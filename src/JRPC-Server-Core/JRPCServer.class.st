@@ -5,96 +5,102 @@ the transport specific details and delegating later to the messageProcessor the 
 of the incoming message.
 "
 Class {
-	#name : #JRPCServer,
-	#superclass : #Object,
+	#name : 'JRPCServer',
+	#superclass : 'Object',
 	#instVars : [
 		'messageProcessor'
 	],
-	#category : #'JRPC-Server-Core'
+	#category : 'JRPC-Server-Core',
+	#package : 'JRPC-Server-Core'
 }
 
-{ #category : #'handlers management' }
-JRPCServer >> addErrorHandler: anErrorHandler [ 
+{ #category : 'handlers management' }
+JRPCServer >> addErrorHandler: anErrorHandler [
 
-	self messageProcessor addErrorHandler: anErrorHandler 
+	self messageProcessor addErrorHandler: anErrorHandler
 ]
 
-{ #category : #'handlers management' }
+{ #category : 'handlers management' }
 JRPCServer >> addHandler: aJRPCHandler [
 
 	self messageProcessor addHandler: aJRPCHandler
 ]
 
-{ #category : #'handlers management' }
+{ #category : 'handlers management' }
 JRPCServer >> addHandlerNamed: aString block: aBlock [
 
 	self messageProcessor addHandlerNamed: aString block: aBlock
 ]
 
-{ #category : #'handlers management' }
+{ #category : 'handlers management' }
 JRPCServer >> addHandlersFromPragmasIn: anObject [
 
 	self messageProcessor addHandlersFromPragmasIn: anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCServer >> debugMode [
+
 	^ self messageProcessor debugMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCServer >> debugMode: aBoolean [
+
 	^ self messageProcessor debugMode: aBoolean
 ]
 
-{ #category : #'handling - jrpc' }
+{ #category : 'handling - jrpc' }
 JRPCServer >> handleJRPCRequestObject: aJRPCRequestObject [
 
 	^ self messageProcessor handleJRPCRequestObject: aJRPCRequestObject
 ]
 
-{ #category : #'handling - json' }
+{ #category : 'handling - json' }
 JRPCServer >> handleJSON: aJSONString [
 
 	^ self messageProcessor handleJSON: aJSONString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCServer >> initialize [
 
 	super initialize.
 	messageProcessor := JRPCMessageProcessor new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCServer >> messageProcessor [
 
 	^ messageProcessor
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCServer >> messageProcessor: anObject [
+
 	messageProcessor := anObject
 ]
 
-{ #category : #'handlers management' }
+{ #category : 'handlers management' }
 JRPCServer >> removeHandlerNamed: aString [
 
 	self messageProcessor removeHandlerNamed: aString
 ]
 
-{ #category : #starting }
+{ #category : 'starting' }
 JRPCServer >> start [
 	"Starts the server.
 	 Depends on the transport implementation, to be overrided by subclasses.
 	"
+
 	self subclassResponsibility
 ]
 
-{ #category : #stopping }
+{ #category : 'stopping' }
 JRPCServer >> stop [
 	"Stops the server.
 	 Depends on the transport implementation, to be overrided by subclasses.
 	"
+
 	self subclassResponsibility
 ]

@@ -1,1 +1,1 @@
-Package { #name : #'JRPC-Server-Core' }
+Package { #name : 'JRPC-Server-Core' }

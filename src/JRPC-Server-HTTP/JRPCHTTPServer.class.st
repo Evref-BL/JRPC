@@ -4,35 +4,40 @@ I am a JSON-RPC 2.0 server running over the HTTP protocol.
 Internally, I use Zinc.
 "
 Class {
-	#name : #JRPCHTTPServer,
-	#superclass : #JRPCServer,
+	#name : 'JRPCHTTPServer',
+	#superclass : 'JRPCServer',
 	#instVars : [
 		'server'
 	],
-	#category : #'JRPC-Server-HTTP'
+	#category : 'JRPC-Server-HTTP',
+	#package : 'JRPC-Server-HTTP'
 }
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 JRPCHTTPServer class >> defaultPort [
+
 	^ 4000
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCHTTPServer >> debugMode [
+
 	^ server debugMode
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCHTTPServer >> debugMode: boolean [
+
 	server debugMode: boolean
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 JRPCHTTPServer >> defaultPort [
+
 	^ self class defaultPort
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCHTTPServer >> initialize [
 
 	super initialize.
@@ -40,30 +45,31 @@ JRPCHTTPServer >> initialize [
 
 	server
 		port: self defaultPort;
-		delegate:
-			( ZnDispatcherDelegate new
-				map: '/'
-				to:
-					[ :request :response | response entity: ( ZnEntity json: ( self handleJSON: request contents ) ) ] )
+		delegate: (ZnDispatcherDelegate new
+				 map: '/'
+				 to: [ :request :response | response entity: (ZnEntity json: (self handleJSON: request contents)) ])
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCHTTPServer >> port [
 
 	^ server port
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCHTTPServer >> port: anInteger [
+
 	server port: anInteger
 ]
 
-{ #category : #starting }
+{ #category : 'starting' }
 JRPCHTTPServer >> start [
+
 	server start
 ]
 
-{ #category : #starting }
+{ #category : 'starting' }
 JRPCHTTPServer >> stop [
+
 	server stop
 ]

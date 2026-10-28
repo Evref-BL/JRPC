@@ -7,50 +7,58 @@ I MUST hold:
 [1]: https://www.jsonrpc.org/specification
 "
 Class {
-	#name : #JRPCErrorResponseObject,
-	#superclass : #JRPCResponseObject,
+	#name : 'JRPCErrorResponseObject',
+	#superclass : 'JRPCResponseObject',
 	#instVars : [
 		'error'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCErrorResponseObject class >> fromJRPCJSONObject: aDictionary [
-	^ (super fromJRPCJSONObject: aDictionary)
-		error: (aDictionary at: 'error')
+
+	^ (super fromJRPCJSONObject: aDictionary) error: (aDictionary at: 'error')
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCErrorResponseObject class >> id: anInteger error: aJRPCErrorObject [
+
 	^ self new
-		id: anInteger;
-		error: aJRPCErrorObject
+		  id: anInteger;
+		  error: aJRPCErrorObject
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCErrorResponseObject >> asJRPCJSON [
+
 	^ super asJRPCJSON
-		at: 'error' put: self error asJRPCJSON;
-		yourself
+		  at: 'error' put: self error asJRPCJSON;
+		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCErrorResponseObject >> error [
+
 	^ error
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCErrorResponseObject >> error: anObject [
+
 	error := anObject
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCErrorResponseObject >> isError [
+
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCErrorResponseObject >> isInvalidRequest [
+
 	^ self error code = InvalidRequest
 ]

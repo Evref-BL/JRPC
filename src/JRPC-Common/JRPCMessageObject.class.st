@@ -6,8 +6,8 @@ I hold:
 - #jsonrpc : the version of JSON-RPC used (always 2.0 in this framework).
 "
 Class {
-	#name : #JRPCMessageObject,
-	#superclass : #JRPCJsonableObject,
+	#name : 'JRPCMessageObject',
+	#superclass : 'JRPCJsonableObject',
 	#instVars : [
 		'jsonrpc',
 		'id'
@@ -15,10 +15,12 @@ Class {
 	#pools : [
 		'JRPCConstantsSharedPool'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageObject class >> classToInstantiateForJSONObject: aJSONObject forClient: isClient [
 	"Given aJSONObject, returns the right class to instantiate in order to get
 	 the model object corresponding.
@@ -44,60 +46,70 @@ JRPCMessageObject class >> classToInstantiateForJSONObject: aJSONObject forClien
 	JRPCIncorrectJSON signal: 'Incorrect JSON, no class to instantiate for it.'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCMessageObject class >> fromJRPCJSONObject: aDictionary [
+
 	^ self new
-		jsonrpc: (aDictionary at: 'jsonrpc');
-		id: (aDictionary at: 'id');
-		yourself
+		  jsonrpc: (aDictionary at: 'jsonrpc');
+		  id: (aDictionary at: 'id');
+		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCMessageObject >> asJRPCJSON [
+
 	^ Dictionary new
-		at: 'jsonrpc' put: self jsonrpc asJRPCJSON;
-		at: 'id' put: self id asJRPCJSON;
-		yourself
+		  at: 'jsonrpc' put: self jsonrpc asJRPCJSON;
+		  at: 'id' put: self id asJRPCJSON;
+		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageObject >> id [
+
 	^ id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageObject >> id: anObject [
+
 	id := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCMessageObject >> initialize [
+
 	super initialize.
 	jsonrpc := JSONRPC
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCMessageObject >> isNotification [
+
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCMessageObject >> isRequest [
+
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageObject >> jsonrpc [
+
 	^ jsonrpc
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageObject >> jsonrpc: anObject [
+
 	jsonrpc := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 JRPCMessageObject >> printOn: aStream [
+
 	super printOn: aStream.
 	aStream
 		nextPut: $(;

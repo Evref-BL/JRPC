@@ -1,37 +1,40 @@
 Class {
-	#name : #JRPCAbstractServerTest,
-	#superclass : #TestCase,
+	#name : 'JRPCAbstractServerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'server'
 	],
-	#category : #'JRPC-Tests'
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCAbstractServerTest class >> isAbstract [
+
 	^ self = JRPCAbstractServerTest
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JRPCAbstractServerTest >> checkPortAvailability [
 
-	[ ( ZnNetworkingUtils serverSocketOn: self port ) close ]
+	[ (ZnNetworkingUtils serverSocketOn: self port) close ]
 		on: Error
-		do: [ :error | self fail: ( 'Port <1p> is not available' expandMacrosWith: self port ) ]
+		do: [ :error | self fail: ('Port <1p> is not available' expandMacrosWith: self port) ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCAbstractServerTest >> newJRPCClient [
+
 	^ self subclassResponsibility
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JRPCAbstractServerTest >> port [
 
 	^ 7777
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 JRPCAbstractServerTest >> tearDown [
 
 	server ifNotNil: [ server stop ].
@@ -39,17 +42,16 @@ JRPCAbstractServerTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testDefaultPort [
 
 	self assert: server defaultPort equals: 4000
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testNotification [
 
 	| notificationCount |
-
 	notificationCount := 0.
 	server addHandlerNamed: 'mail_sent' block: [ notificationCount := notificationCount + 1 ].
 
@@ -58,11 +60,10 @@ JRPCAbstractServerTest >> testNotification [
 	self assert: notificationCount equals: 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testNotificationWithInvalidMethod [
 
 	| notificationCount |
-
 	notificationCount := 0.
 	server addHandlerNamed: 'mail_sent' block: [ notificationCount := notificationCount + 1 ].
 
@@ -71,37 +72,34 @@ JRPCAbstractServerTest >> testNotificationWithInvalidMethod [
 	self assert: notificationCount equals: 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testRequestOnInvalidEndpoint [
 
 	| httpClient failed |
-
 	server addHandlerNamed: 'sum' block: [ :a :b | a + b ].
 	failed := false.
 
-	httpClient := JRPCClient http: ( 'http://localhost' asUrl port: self port ) / 'bad'.
-	httpClient
-		ifFail: [ :error | 
+	httpClient := JRPCClient http: ('http://localhost' asZnUrl port: self port) / 'bad'.
+	httpClient ifFail: [ :error |
 			failed := true.
-			'{}'
-			].
+			'{}' ].
 	self
-		should: [ httpClient callMethod: 'sum' arguments: #(1 3) withId: 1 ] raise: JRPCIncorrectJSON;
+		should: [ httpClient callMethod: 'sum' arguments: #( 1 3 ) withId: 1 ] raise: JRPCIncorrectJSON;
 		assert: failed
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testRequestWithoutParameters [
 
 	server addHandlerNamed: 'zero' block: [ 0 ].
 
-	self assert: ( self newJRPCClient callMethod: 'zero' withId: 3 ) result equals: 0
+	self assert: (self newJRPCClient callMethod: 'zero' withId: 3) result equals: 0
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractServerTest >> testValidRequest [
 
 	server addHandlerNamed: 'sum' block: [ :a :b | a + b ].
 
-	self assert: ( self newJRPCClient callMethod: 'sum' arguments: #(1 3) withId: 1 ) result equals: 4
+	self assert: (self newJRPCClient callMethod: 'sum' arguments: #( 1 3 ) withId: 1) result equals: 4
 ]

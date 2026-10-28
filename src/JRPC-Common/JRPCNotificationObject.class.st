@@ -8,45 +8,52 @@ The server silently process the notification without returning a response to the
 [1]: https://www.jsonrpc.org/specification
 "
 Class {
-	#name : #JRPCNotificationObject,
-	#superclass : #JRPCRequestObject,
+	#name : 'JRPCNotificationObject',
+	#superclass : 'JRPCRequestObject',
 	#pools : [
 		'JRPCConstantsSharedPool'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCNotificationObject class >> fromJRPCJSONObject: aDictionary [
+
 	^ self new
-		jsonrpc: (aDictionary at: 'jsonrpc');
-		method: (aDictionary at: 'method');
-		params: (aDictionary at: 'params' ifAbsent: [ nil ]);
-		yourself
+		  jsonrpc: (aDictionary at: 'jsonrpc');
+		  method: (aDictionary at: 'method');
+		  params: (aDictionary at: 'params' ifAbsent: [ nil ]);
+		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCNotificationObject class >> method: aString [
+
 	^ self new
-		method: aString;
-		params: nil;
-		yourself
+		  method: aString;
+		  params: nil;
+		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCNotificationObject >> asJRPCJSON [
+
 	| dict |
 	dict := super asJRPCJSON.
 	dict removeKey: 'id'.
 	^ dict
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCNotificationObject >> isNotification [
+
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCNotificationObject >> isRequest [
+
 	^ false
 ]

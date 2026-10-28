@@ -8,106 +8,116 @@ My concrete subclasses must override #executeWithArguments: method to define wha
 I also know the #server to which I have been added (if any).
 "
 Class {
-	#name : #JRPCAbstractHandler,
-	#superclass : #Object,
+	#name : 'JRPCAbstractHandler',
+	#superclass : 'Object',
 	#instVars : [
 		'methodName',
 		'isForNotification',
 		'isForRequest'
 	],
-	#category : #'JRPC-Server-Core'
+	#category : 'JRPC-Server-Core',
+	#package : 'JRPC-Server-Core'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler class >> defaultMethodName [
 	"Returns the method name that will be set to the handler instance by default."
+
 	^ self subclassResponsibility
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 JRPCAbstractHandler >> = anObject [
 	"Answer whether the receiver and anObject represent the same object."
 
-	self == anObject
-		ifTrue: [ ^ true ].
-	self class = anObject class
-		ifFalse: [ ^ false ].
-	^ self methodName = anObject methodName
-		and: [ self isForNotification = anObject isForNotification
-			and: [ self isForRequest = anObject isForRequest ] ]
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ self methodName = anObject methodName and: [
+		  self isForNotification = anObject isForNotification and: [ self isForRequest = anObject isForRequest ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 JRPCAbstractHandler >> canHandle: aRequestOrNotification [
-	^ (self isForRequest and: [ aRequestOrNotification isRequest ])
-		or: [ self isForNotification and: [ aRequestOrNotification isNotification ] ]
+
+	^ (self isForRequest and: [ aRequestOrNotification isRequest ]) or: [
+		  self isForNotification and: [ aRequestOrNotification isNotification ] ]
 ]
 
-{ #category : #'parameters-checking' }
+{ #category : 'parameters-checking' }
 JRPCAbstractHandler >> checkParametersForRequest: aJRPCRequestObject [
 	"By default, no check is done.
 	 Subclasses should raise a JRPCInvalidParameters error if the params object of
 	 aJRPCRequestObject is invalid.
 	"
+
+	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> defaultMethodName [
+
 	^ self class defaultMethodName
 ]
 
-{ #category : #evaluation }
+{ #category : 'evaluation' }
 JRPCAbstractHandler >> executeWithArguments: anArrayOrDictionary [
+
 	^ self subclassResponsibility
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 JRPCAbstractHandler >> hash [
 	"Answer an integer value that is related to the identity of the receiver."
 
-	^ self isForNotification hash
-		bitXor: (self isForRequest hash bitXor: self methodName hash)
+	^ self isForNotification hash bitXor: (self isForRequest hash bitXor: self methodName hash)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCAbstractHandler >> initialize [
+
 	super initialize.
 	self isForRequest: true.
 	self isForNotification: true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> isForNotification [
+
 	^ isForNotification
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> isForNotification: aBoolean [
-	(aBoolean not and: [ self isForRequest not ])
-		ifTrue: [ self error: 'A handler must be for notification or for request. It can not refuse both!' ].
-		
+
+	(aBoolean not and: [ self isForRequest not ]) ifTrue: [
+		self error: 'A handler must be for notification or for request. It can not refuse both!' ].
+
 	isForNotification := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> isForRequest [
+
 	^ isForRequest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> isForRequest: aBoolean [
-	(aBoolean not and: [ self isForNotification not ])
-		ifTrue: [ self error: 'A handler must be for notification or for request. It can not refuse both!' ].
-	
+
+	(aBoolean not and: [ self isForNotification not ]) ifTrue: [
+		self error: 'A handler must be for notification or for request. It can not refuse both!' ].
+
 	isForRequest := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> methodName [
+
 	^ methodName ifNil: [ methodName := self defaultMethodName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCAbstractHandler >> methodName: anObject [
+
 	methodName := anObject
 ]

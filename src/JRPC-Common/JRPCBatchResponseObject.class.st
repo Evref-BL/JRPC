@@ -4,50 +4,51 @@ I model a batch of responses answered by a server.
 I hold an array of JRPCEmptyResponseObject / JRPCErrorResponseObject / JRPCSuccessyResponseObject.
 "
 Class {
-	#name : #JRPCBatchResponseObject,
-	#superclass : #JRPCJsonableObject,
+	#name : 'JRPCBatchResponseObject',
+	#superclass : 'JRPCJsonableObject',
 	#instVars : [
 		'responses'
 	],
-	#category : #'JRPC-Common-Core'
+	#category : 'JRPC-Common-Core',
+	#package : 'JRPC-Common',
+	#tag : 'Core'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCBatchResponseObject class >> fromJRPCJSONObject: aJSONObject [
-	aJSONObject isArray
-		ifFalse: [ JRPCIncorrectJSON signal ].
-		
+
+	aJSONObject isArray ifFalse: [ JRPCIncorrectJSON signal ].
+
 	^ self new
-		responses: (aJSONObject collect: [ :json | 
-			(JRPCMessageObject classToInstantiateForJSONObject: json forClient: true)
-				fromJRPCJSONObject: json ]);
-		yourself
+		  responses: (aJSONObject collect: [ :json |
+					   (JRPCMessageObject classToInstantiateForJSONObject: json forClient: true) fromJRPCJSONObject: json ]);
+		  yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 JRPCBatchResponseObject >> asJRPCJSON [
-	^ self responses
-		collect: #asJRPCJSON
-		"JRPCEmptyResponseObjects will generate nil and should be removed from the JSON object"
-		thenReject: #isNil
+
+	^ self responses collect: #asJRPCJSON thenReject: #isNil
+	"JRPCEmptyResponseObjects will generate nil and should be removed from the JSON object"
 ]
 
-{ #category : #'server conversion' }
+{ #category : 'server conversion' }
 JRPCBatchResponseObject >> beConvertedBy: aJRPCMessageProcessor [
 
 	| jsonObject |
-
 	jsonObject := self asJRPCJSON.
 	jsonObject ifEmpty: [ ^ '' ].
 	^ aJRPCMessageProcessor convertJRPCJsonableObjectToJSON: jsonObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCBatchResponseObject >> responses [
+
 	^ responses
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCBatchResponseObject >> responses: anObject [
+
 	responses := anObject
 ]

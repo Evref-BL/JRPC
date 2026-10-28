@@ -1,6 +1,7 @@
-Extension { #name : #STONReaderError }
+Extension { #name : 'STONReaderError' }
 
-{ #category : #'*JRPC-Common' }
+{ #category : '*JRPC-Common' }
 STONReaderError >> asJRPCResponse [
+
 	^ JRPCErrorResponseObject id: nil error: JRPCErrorObject parseError
 ]

@@ -1,1 +1,1 @@
-Package { #name : #BaselineOfJRPC }
+Package { #name : 'BaselineOfJRPC' }

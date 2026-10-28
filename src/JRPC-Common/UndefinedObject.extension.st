@@ -1,6 +1,7 @@
-Extension { #name : #UndefinedObject }
+Extension { #name : 'UndefinedObject' }
 
-{ #category : #'*JRPC-Common' }
+{ #category : '*JRPC-Common' }
 UndefinedObject >> asJRPCJSON [
+
 	^ self
 ]

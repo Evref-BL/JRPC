@@ -1,1 +1,1 @@
-Package { #name : #'JRPC-Client' }
+Package { #name : 'JRPC-Client' }

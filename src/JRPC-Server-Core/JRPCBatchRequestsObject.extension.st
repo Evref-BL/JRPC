@@ -1,9 +1,9 @@
-Extension { #name : #JRPCBatchRequestsObject }
+Extension { #name : 'JRPCBatchRequestsObject' }
 
-{ #category : #'*JRPC-Server-Core' }
+{ #category : '*JRPC-Server-Core' }
 JRPCBatchRequestsObject >> beHandledBy: aJRPCMessageProcessor [
 
 	^ JRPCBatchResponseObject new
-		responses: ( self requests collect: [ :req | req beHandledBy: aJRPCMessageProcessor ] );
-		yourself
+		  responses: (self requests collect: [ :req | req beHandledBy: aJRPCMessageProcessor ]);
+		  yourself
 ]

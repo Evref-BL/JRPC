@@ -12,16 +12,17 @@ JRPCMessageSendHandler new
 Will the send #+ message to the instance of SmallInteger 1 with the arguments provided.
 "
 Class {
-	#name : #JRPCMessageSendHandler,
-	#superclass : #JRPCAbstractHandler,
+	#name : 'JRPCMessageSendHandler',
+	#superclass : 'JRPCAbstractHandler',
 	#instVars : [
 		'receiver',
 		'messageSelector'
 	],
-	#category : #'JRPC-Server-Core'
+	#category : 'JRPC-Server-Core',
+	#package : 'JRPC-Server-Core'
 }
 
-{ #category : #'parameters-checking' }
+{ #category : 'parameters-checking' }
 JRPCMessageSendHandler >> checkParametersForRequest: aJRPCRequestObject [
 	"Positional parameters must match the procedure's arity: there is no way to
 	 leave one out and still say which the others are. Named parameters may give
@@ -42,7 +43,7 @@ JRPCMessageSendHandler >> checkParametersForRequest: aJRPCRequestObject [
 	params keysDo: [ :each | (names includes: each asString) ifFalse: [ JRPCInvalidParameters signal ] ]
 ]
 
-{ #category : #evaluation }
+{ #category : 'evaluation' }
 JRPCMessageSendHandler >> executeWithArguments: anArrayOrDictionary [
 	"Named parameters are placed by name, so a parameter the request leaves out
 	 is passed as nil rather than shifting the ones that follow it into its place."
@@ -55,23 +56,26 @@ JRPCMessageSendHandler >> executeWithArguments: anArrayOrDictionary [
 	^ self send: self messageSelector to: self receiver with: arguments
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> messageSelector [
+
 	^ messageSelector
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> messageSelector: anObject [
+
 	messageSelector := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> parametersCount [
 	"Returns the number of parameters expected by the handler."
+
 	^ self parametersNames size
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> parametersNames [
 	"The procedure's parameter names, in the order it takes them.
 	 The selector is looked up through the hierarchy, so a receiver
@@ -80,17 +84,20 @@ JRPCMessageSendHandler >> parametersNames [
 	^ (self receiver class lookupSelector: self messageSelector) argumentNames
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> receiver [
+
 	^ receiver
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCMessageSendHandler >> receiver: anObject [
+
 	receiver := anObject
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 JRPCMessageSendHandler >> send: aSelector to: aReceiver with: arguments [
+
 	^ aReceiver perform: aSelector withArguments: arguments
 ]

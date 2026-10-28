@@ -1,1 +1,1 @@
-Package { #name : #'JRPC-Server-Logging-Tests' }
+Package { #name : 'JRPC-Server-Logging-Tests' }

@@ -1,6 +1,7 @@
-Extension { #name : #JRPCServer }
+Extension { #name : 'JRPCServer' }
 
-{ #category : #'*JRPC-Server-TCP' }
+{ #category : '*JRPC-Server-TCP' }
 JRPCServer class >> tcp [
+
 	^ JRPCTCPServer new
 ]

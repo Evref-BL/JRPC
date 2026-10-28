@@ -1,79 +1,90 @@
 Class {
-	#name : #JRPCStreamClient,
-	#superclass : #JRPCClient,
+	#name : 'JRPCStreamClient',
+	#superclass : 'JRPCClient',
 	#instVars : [
 		'writeStream',
 		'readStream',
 		'requestsSeparator',
 		'actionAfterStreamWritten'
 	],
-	#category : #'JRPC-Client'
+	#category : 'JRPC-Client',
+	#package : 'JRPC-Client'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 JRPCStreamClient class >> writeStream: writeStream readStream: readStream requestsSeparator: aString [
+
 	^ self new
-		writeStream: writeStream;
-		readStream: readStream;
-		requestsSeparator: aString;
-		yourself
+		  writeStream: writeStream;
+		  readStream: readStream;
+		  requestsSeparator: aString;
+		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> actionAfterStreamWritten [
+
 	^ actionAfterStreamWritten
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> actionAfterStreamWritten: anObject [
+
 	actionAfterStreamWritten := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 JRPCStreamClient >> initialize [
+
 	super initialize.
-	self actionAfterStreamWritten: [  ]
+	self actionAfterStreamWritten: [ ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> readStream [
+
 	^ readStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> readStream: anObject [
+
 	readStream := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> requestsSeparator [
+
 	^ requestsSeparator
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> requestsSeparator: anObject [
+
 	requestsSeparator := anObject
 ]
 
-{ #category : #'private - sending' }
+{ #category : 'private - sending' }
 JRPCStreamClient >> sendRequest: aJRPCRequestObject [
+
 	self convertJRPCJsonableObjectToJSON: aJRPCRequestObject asJRPCJSON on: self writeStream.
-	self writeStream
-		nextPutAll: self requestsSeparator.
-		
+	self writeStream nextPutAll: self requestsSeparator.
+
 	self actionAfterStreamWritten cull: self writeStream.
-	
+
 	"Needs to parse from a String here because it is possible that the stream
 	 provided can not do look ahead (the JSON parser needs that)."
 	^ self parseSupposedJRPCMessageObjectFromString: self readStream upToEnd
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> writeStream [
+
 	^ writeStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 JRPCStreamClient >> writeStream: anObject [
+
 	writeStream := anObject
 ]

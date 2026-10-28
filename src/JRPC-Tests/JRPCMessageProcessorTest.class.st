@@ -2,120 +2,125 @@
 A JRPCMessageProcessorTest is a test class for testing the behavior of JRPCMessageProcessor
 "
 Class {
-	#name : #JRPCMessageProcessorTest,
-	#superclass : #TestCase,
-	#category : #'JRPC-Tests'
+	#name : 'JRPCMessageProcessorTest',
+	#superclass : 'TestCase',
+	#category : 'JRPC-Tests',
+	#package : 'JRPC-Tests'
 }
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testAddHandler [
+
 	| messageProcessor handler |
 	messageProcessor := JRPCMessageProcessor new.
-	
+
 	self assert: messageProcessor handlers size equals: 0.
-	
+
 	handler := JRPCBlockHandler new
-					methodName: 'powerOf2';
-					block: [ :x | x ** 2 ];
-					yourself.
+		           methodName: 'powerOf2';
+		           block: [ :x | x ** 2 ];
+		           yourself.
 	messageProcessor addHandler: handler.
-	
+
 	self assert: messageProcessor handlers size equals: 1.
-	self assert: messageProcessor handlers first == handler.
+	self assert: messageProcessor handlers first == handler
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testAddHandler2 [
+
 	| messageProcessor handler |
 	messageProcessor := JRPCMessageProcessor new.
-	
+
 	self assert: messageProcessor handlers size equals: 0.
-	
+
 	handler := JRPCBlockHandler new
-					methodName: 'powerOf2';
-					block: [ :x | x ** 2 ];
-					yourself.
+		           methodName: 'powerOf2';
+		           block: [ :x | x ** 2 ];
+		           yourself.
 	messageProcessor addHandler: handler.
-	
-	self should: [ messageProcessor addHandler: handler ] raise: JRPCDuplicatedHandlerError.
+
+	self should: [ messageProcessor addHandler: handler ] raise: JRPCDuplicatedHandlerError
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testAddHandler3 [
+
 	| messageProcessor handler handler2 |
 	messageProcessor := JRPCMessageProcessor new.
-	
+
 	self assert: messageProcessor handlers size equals: 0.
-	
+
 	handler := JRPCBlockHandler new
-					methodName: 'powerOf2';
-					block: [ :x | x ** 2 ];
-					yourself.
+		           methodName: 'powerOf2';
+		           block: [ :x | x ** 2 ];
+		           yourself.
 	messageProcessor addHandler: handler.
-	
+
 	"Different handler with same name"
 	handler2 := JRPCBlockHandler new
-					methodName: 'powerOf2';
-					block: [ :x | x ** 2 ];
-					yourself.
-	
-	self should: [ messageProcessor addHandler: handler2 ] raise: JRPCDuplicatedHandlerError.
+		            methodName: 'powerOf2';
+		            block: [ :x | x ** 2 ];
+		            yourself.
+
+	self should: [ messageProcessor addHandler: handler2 ] raise: JRPCDuplicatedHandlerError
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testAddHandler4 [
+
 	| messageProcessor handler handler2 |
 	messageProcessor := JRPCMessageProcessor new.
-	
+
 	self assert: messageProcessor handlers size equals: 0.
-	
+
 	handler := JRPCBlockHandler new
-					methodName: 'foo';
-					block: [ :x | x ** 2 ];
-					isForRequest: false;
-					yourself.
+		           methodName: 'foo';
+		           block: [ :x | x ** 2 ];
+		           isForRequest: false;
+		           yourself.
 	messageProcessor addHandler: handler.
-	
+
 	"Different handler with same name"
 	handler2 := JRPCBlockHandler new
-					methodName: 'foo';
-					block: [ :x | x ** 2 ];
-					isForNotification: false;
-					yourself.
-	
-	self shouldnt: [ messageProcessor addHandler: handler2 ] raise: JRPCDuplicatedHandlerError.
+		            methodName: 'foo';
+		            block: [ :x | x ** 2 ];
+		            isForNotification: false;
+		            yourself.
+
+	self shouldnt: [ messageProcessor addHandler: handler2 ] raise: JRPCDuplicatedHandlerError
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testDebugMode [
+
 	| messageProcessor |
 	messageProcessor := JRPCMessageProcessor new.
-	
+
 	self deny: messageProcessor debugMode.
-	
+
 	messageProcessor debugMode: true.
-	
-	self assert: messageProcessor debugMode.
+
+	self assert: messageProcessor debugMode
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testDebugModeDoNotCatchError [
+
 	| messageProcessor |
 	messageProcessor := JRPCMessageProcessor new.
 	messageProcessor debugMode: true.
-	
+
 	messageProcessor addHandlerNamed: 'error' block: [ Error signal ].
-	
-	self should: [ (JRPCRequestObject id: 1 method: 'error') beHandledBy: messageProcessor ]
-		raise: Error.
-		
+
+	self should: [ (JRPCRequestObject id: 1 method: 'error') beHandledBy: messageProcessor ] raise: Error.
+
 	messageProcessor debugMode: false.
-	
-	self shouldnt: [ (JRPCRequestObject id: 1 method: 'error') beHandledBy: messageProcessor ]
-		raise: Error.
+
+	self shouldnt: [ (JRPCRequestObject id: 1 method: 'error') beHandledBy: messageProcessor ] raise: Error
 ]
 
-{ #category : #'tests - error handlers' }
+{ #category : 'tests - error handlers' }
 JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedOnSuccess [
 
 	| messageProcessor response |
@@ -124,8 +129,7 @@ JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedOnSuccess [
 		addHandlerNamed: 'success' block: [ 'Sucess!' ];
 		addErrorHandler: [ :error | self fail ].
 
-	response := messageProcessor handleJRPCRequestObject:
-		            (JRPCRequestObject new
+	response := messageProcessor handleJRPCRequestObject: (JRPCRequestObject new
 			             id: 1;
 			             method: 'success';
 			             yourself).
@@ -133,7 +137,7 @@ JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedOnSuccess [
 	self deny: response isError
 ]
 
-{ #category : #'tests - error handlers' }
+{ #category : 'tests - error handlers' }
 JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedWhenDebugModeIsEnabled [
 
 	| messageProcessor |
@@ -144,15 +148,15 @@ JRPCMessageProcessorTest >> testErrorHandlersAreNotEvaluatedWhenDebugModeIsEnabl
 		addErrorHandler: [ :error | self fail ].
 
 	self
-		should: [ 
-			messageProcessor handleJRPCRequestObject: (JRPCRequestObject new
-					 id: 1;
-					 method: 'error';
-					 yourself) ]
+		should: [
+				messageProcessor handleJRPCRequestObject: (JRPCRequestObject new
+						 id: 1;
+						 method: 'error';
+						 yourself) ]
 		raise: ZeroDivide
 ]
 
-{ #category : #'tests - error handlers' }
+{ #category : 'tests - error handlers' }
 JRPCMessageProcessorTest >> testErrorHandling [
 
 	| messageProcessor errorWasRaised response |
@@ -163,8 +167,7 @@ JRPCMessageProcessorTest >> testErrorHandling [
 		addHandlerNamed: 'error' block: [ Error signal ];
 		addErrorHandler: [ :error | errorWasRaised := true ].
 
-	response := messageProcessor handleJRPCRequestObject:
-		            (JRPCRequestObject new
+	response := messageProcessor handleJRPCRequestObject: (JRPCRequestObject new
 			             id: 1;
 			             method: 'error';
 			             yourself).
@@ -174,10 +177,10 @@ JRPCMessageProcessorTest >> testErrorHandling [
 		assert: errorWasRaised
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testHandlerFor [
-	| messageProcessor block handler |
 
+	| messageProcessor block handler |
 	messageProcessor := JRPCMessageProcessor new.
 
 	self should: [ messageProcessor handlerFor: (JRPCRequestObject id: 1 method: 'powerOf2') ] raise: JRPCNonExistentHandler.
@@ -192,71 +195,71 @@ JRPCMessageProcessorTest >> testHandlerFor [
 		assert: handler block equals: block
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testHandlerForHandlerThatDealWithNotificationOnly [
-	| messageProcessor block handler |
 
+	| messageProcessor block handler |
 	messageProcessor := JRPCMessageProcessor new.
 
 	block := [ :anInteger | anInteger ** 2 ].
 
 	messageProcessor addHandler: (JRPCBlockHandler new
-											methodName: 'powerOf2';
-											block: block;
-											isForRequest: false;
-											yourself).
-	
+			 methodName: 'powerOf2';
+			 block: block;
+			 isForRequest: false;
+			 yourself).
+
 	handler := messageProcessor handlerFor: (JRPCNotificationObject method: 'powerOf2').
 
 	self
 		assert: handler methodName equals: 'powerOf2';
 		assert: handler block equals: block.
-		
-	self should: [ messageProcessor handlerFor: (JRPCRequestObject id: 1 method: 'powerOf2') ] raise: JRPCNonExistentHandler.
+
+	self should: [ messageProcessor handlerFor: (JRPCRequestObject id: 1 method: 'powerOf2') ] raise: JRPCNonExistentHandler
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testHandlerForHandlerThatDealWithRequestOnly [
-	| messageProcessor block handler |
 
+	| messageProcessor block handler |
 	messageProcessor := JRPCMessageProcessor new.
 
 	block := [ :anInteger | anInteger ** 2 ].
 
 	messageProcessor addHandler: (JRPCBlockHandler new
-											methodName: 'powerOf2';
-											block: block;
-											isForNotification: false;
-											yourself).
-	
+			 methodName: 'powerOf2';
+			 block: block;
+			 isForNotification: false;
+			 yourself).
+
 	handler := messageProcessor handlerFor: (JRPCRequestObject id: 1 method: 'powerOf2').
 
 	self
 		assert: handler methodName equals: 'powerOf2';
 		assert: handler block equals: block.
-		
-	self should: [ messageProcessor handlerFor: (JRPCNotificationObject method: 'powerOf2') ] raise: JRPCNonExistentHandler.
+
+	self should: [ messageProcessor handlerFor: (JRPCNotificationObject method: 'powerOf2') ] raise: JRPCNonExistentHandler
 ]
 
-{ #category : #test }
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testRemoveHandler [
+
 	| messageProcessor handler |
 	messageProcessor := JRPCMessageProcessor new.
 	handler := JRPCBlockHandler new
-					methodName: 'powerOf2';
-					block: [ :x | x ** 2 ];
-					yourself.
+		           methodName: 'powerOf2';
+		           block: [ :x | x ** 2 ];
+		           yourself.
 	messageProcessor addHandler: handler.
-	
+
 	self assert: messageProcessor handlers size equals: 1.
-	
+
 	messageProcessor removeHandler: handler.
-	
-	self assert: messageProcessor handlers size equals: 0.
-	
+
+	self assert: messageProcessor handlers size equals: 0
 ]
 
-{ #category : #'tests - error handlers' }
+{ #category : 'tests - error handlers' }
 JRPCMessageProcessorTest >> testSeveralErrorHandlers [
 
 	| messageProcessor response errorCount |
@@ -268,8 +271,7 @@ JRPCMessageProcessorTest >> testSeveralErrorHandlers [
 		addErrorHandler: [ :error | errorCount := errorCount + 1 ];
 		addErrorHandler: [ :error | errorCount := errorCount + 1 ].
 
-	response := messageProcessor handleJRPCRequestObject:
-		            (JRPCRequestObject new
+	response := messageProcessor handleJRPCRequestObject: (JRPCRequestObject new
 			             id: 1;
 			             method: 'error';
 			             yourself).
