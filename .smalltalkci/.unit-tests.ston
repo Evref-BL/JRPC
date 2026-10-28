@@ -9,8 +9,8 @@ SmalltalkCISpec {
   ],
   #testing : {
     #coverage : {
-      #packages : [ 'JRPC-Client' , 'JRPC-Server*' , 'JRPC-Tests' ],
-      #format: #lcov
+      #packages : [ 'JRPC-Common' , 'JRPC-Client' , 'JRPC-Server*' ],
+      #format : #lcov
     }
   }
 }

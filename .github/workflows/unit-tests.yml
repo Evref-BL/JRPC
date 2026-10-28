@@ -32,3 +32,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         timeout-minutes: 15
+      - name: Find the coverage report
+        id: coverage
+        if: ${{ success() && matrix.smalltalk == 'Pharo64-14' }}
+        # smalltalkCI writes it next to the spec, which lives in .smalltalkci/
+        run: |
+          report="$(find . -path '*coverage/lcov.info' -print -quit)"
+          test -s "$report"
+          echo "report=$report" >> "$GITHUB_OUTPUT"
+        shell: bash
+      - name: Coveralls
+        if: ${{ success() && matrix.smalltalk == 'Pharo64-14' }}
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.coverage.outputs.report }}
+          format: lcov
+          flag-name: Pharo64-14
+          fail-on-error: false
