@@ -290,6 +290,26 @@ JRPCMessageProcessorTest >> testHandlerForHandlerThatDealWithRequestOnly [
 ]
 
 { #category : 'test' }
+JRPCMessageProcessorTest >> testProcessorFromBeforeItsSlotsStillAnswersErrors [
+	"Loading a version that adds a slot leaves it unset in the processors already
+	 running, whose initialize ran before the slot existed."
+
+	| processor answer errorWasHandled |
+	errorWasHandled := false.
+	processor := JRPCMessageProcessor new.
+	processor addHandlerNamed: 'divide' block: [ :x :y | x / y ].
+	processor
+		instVarNamed: #includesErrorData put: nil;
+		instVarNamed: #errorHandlers put: nil.
+
+	processor addErrorHandler: [ :error | errorWasHandled := true ].
+	answer := STONJSON fromString: (processor handleJSON: '{"jsonrpc":"2.0","method":"divide","params":[1,0],"id":1}').
+
+	self assertCollection: (answer at: 'error') keys hasSameElements: #( 'code' 'message' ).
+	self assert: errorWasHandled
+]
+
+{ #category : 'test' }
 JRPCMessageProcessorTest >> testRemoveHandler [
 
 	| messageProcessor handler |
