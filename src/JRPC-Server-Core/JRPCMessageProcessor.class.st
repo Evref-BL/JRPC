@@ -23,7 +23,7 @@ Class {
 { #category : 'handlers management' }
 JRPCMessageProcessor >> addErrorHandler: aBlock [
 
-	errorHandlers add: aBlock
+	self errorHandlers add: aBlock
 ]
 
 { #category : 'handlers management' }
@@ -46,6 +46,14 @@ JRPCMessageProcessor >> debugMode: aBoolean [
 	debugMode := aBoolean
 ]
 
+{ #category : 'accessing' }
+JRPCMessageProcessor >> errorHandlers [
+	"Unset in a processor created before this slot existed, which a server
+	 running while a newer version loads still is."
+
+	^ errorHandlers ifNil: [ errorHandlers := OrderedCollection new ]
+]
+
 { #category : 'private' }
 JRPCMessageProcessor >> handleErrorsDuring: aBlock for: aJRPCRequestObject [
 
@@ -55,7 +63,7 @@ JRPCMessageProcessor >> handleErrorsDuring: aBlock for: aJRPCRequestObject [
 				  aBlock
 					  on: Error
 					  do: [ :jrpcError |
-							  errorHandlers do: [ :handler | handler cull: jrpcError ].
+							  self errorHandlers do: [ :handler | handler cull: jrpcError ].
 							  jrpcError return:
 								  (self withoutInternalDataUnlessAsked: (aJRPCRequestObject convertErrorToResponse: jrpcError) for: jrpcError) ] ]
 ]
@@ -147,9 +155,12 @@ JRPCMessageProcessor >> includesErrorData [
 	 that signalled it, and the method it was signalled from.
 
 	 Off, because a server answers clients that have no business knowing any of
-	 that. Turn it on where the clients are your own."
+	 that. Turn it on where the clients are your own.
 
-	^ includesErrorData
+	 Unset in a processor created before this slot existed, which a server
+	 running while a newer version loads still is: that reads as off too."
+
+	^ includesErrorData ifNil: [ false ]
 ]
 
 { #category : 'accessing' }
@@ -163,9 +174,7 @@ JRPCMessageProcessor >> initialize [
 
 	super initialize.
 	handlers := OrderedCollection new.
-	errorHandlers := OrderedCollection new.
-	self debugMode: false.
-	self includesErrorData: false
+	self debugMode: false
 ]
 
 { #category : 'testing' }
